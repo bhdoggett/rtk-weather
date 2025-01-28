@@ -26,7 +26,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <h1>Weather Project</h1>
+      <h1 className="italic">Weather Project</h1>
 
       <form onSubmit={handleSubmitQuery}>
         <input
