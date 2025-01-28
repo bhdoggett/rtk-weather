@@ -3,8 +3,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-export const fetchFiveDay = createAsyncThunk(
-  "weather/fetchFiveDay",
+export const fetchWeather = createAsyncThunk(
+  "weather/fetchWeather",
   async (query) => {
     console.log("query:", query);
     const urlNoCoordinates = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${apiKey}`;
@@ -26,14 +26,14 @@ export const weatherSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchFiveDay.pending, (state) => {
+      .addCase(fetchWeather.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchFiveDay.fulfilled, (state, action) => {
+      .addCase(fetchWeather.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.weather = action.payload;
       })
-      .addCase(fetchFiveDay.rejected, (state, action) => {
+      .addCase(fetchWeather.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
