@@ -1,13 +1,12 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import type { cityWeather } from "../../types/cityWeather";
-import type { weatherState } from "../../types/weatherState";
+import type { CityWeather } from "../../types/CityWeather";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 const units = "imperial";
 
-const getAvgData = (data: cityWeather, dataType: string): string => {
+const getAvgData = (data: CityWeather, dataType: string): string => {
   let units = "";
   switch (dataType) {
     case "temp":
@@ -32,12 +31,10 @@ const getAvgData = (data: cityWeather, dataType: string): string => {
     index++;
   }
 
-  console.log(`${parseInt(acc.toFixed(1))} ${units}`);
-
   return `${parseInt(acc.toFixed(1))} ${units}`;
 };
 
-const allDataByType = (data: cityWeather, dataType: string): number[] => {
+const allDataByType = (data: CityWeather, dataType: string): number[] => {
   return data.list.map((index) => index.main[dataType]);
 };
 
@@ -45,13 +42,9 @@ export const fetchWeather = createAsyncThunk(
   "weather/fetchWeather",
   async (query) => {
     const firstUrl = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${apiKey}&units=${units}`;
-    console.log("firstUrl:", firstUrl);
     const responseOne = await axios.get(firstUrl);
-    console.log("axios firstResponse:", responseOne);
     const secondUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${responseOne.data.coord.lat}&lon=${responseOne.data.coord.lon}&appid=${apiKey}&units=${units}`;
-    console.log("secondUrl:", secondUrl);
     const responseTwo = await axios.get(secondUrl);
-    console.log("axios secondResponse:", responseTwo);
 
     return {
       city: responseTwo.data.city.name,
@@ -70,10 +63,8 @@ export const weatherSlice = createSlice({
   name: "weather",
   initialState: {
     status: "idle",
-    coordinates: {},
     error: null,
     cities: [],
-    defaultCity: {},
   },
   reducers: {},
   extraReducers: (builder) => {

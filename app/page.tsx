@@ -4,9 +4,9 @@ import { fetchWeather } from "./store/slices/weather";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Chart from "./components/chart";
-import type { weatherState } from "./types/weatherState";
-import { indexData } from "./types/indexData";
-import type { cityProcessedData } from "./types/cityProcessedData";
+import type { WeatherState } from "./types/WeatherState";
+import { IndexData } from "./types/IndexData";
+import type { CityProcessedData } from "./types/CityProcessedData";
 
 type weatherPropsType = {
   data: number[];
@@ -17,11 +17,7 @@ type weatherPropsType = {
 const Home: React.FC = () => {
   const [query, setQuery] = useState("");
   const dispatch = useDispatch();
-  const weather = useSelector((state) => state.weather.currentWeatherQuery);
   const cities = useSelector((state) => state.weather.cities);
-
-  console.log("weather Redux state:", weather);
-  console.log("weather Redux state CITIES:", cities);
 
   const weatherCharts = (city: cityProcessedData): weatherPropsType[] => {
     return [
@@ -45,13 +41,10 @@ const Home: React.FC = () => {
 
   const handleSubmitQuery = (e) => {
     e.preventDefault();
-    console.log("Dispatching fetchWeather with query:", query);
     dispatch(fetchWeather(query));
     setQuery("");
     return cities;
   };
-
-  console.log("weather:", weather);
 
   return (
     <div className="content-center">

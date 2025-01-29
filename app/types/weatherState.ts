@@ -1,10 +1,7 @@
-import type { cityWeather } from "./cityWeather";
+import type { cityWeather } from "./CityWeather";
 
-export type weatherState = {
-  currentWeatherQuery: {};
+export interface WeatherState {
   status: string;
-  coordinates: {};
   error: string | null;
   cities: cityWeather[];
-  defaultCity: {};
-};
+}

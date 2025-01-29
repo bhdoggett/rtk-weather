@@ -1,6 +1,6 @@
-import type { indexData } from "./indexData";
+import type { IndexData } from "./IndexData";
 
-export type cityWeather = {
+export type CityWeather = {
   city: { name: string };
-  list: indexData[];
+  list: IndexData[];
 };
