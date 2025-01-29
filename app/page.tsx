@@ -3,16 +3,37 @@
 import { fetchWeather } from "./store/slices/weather";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import {
-  Sparklines,
-  SparklinesLine,
-  SparklinesReferenceLine,
-} from "react-sparklines";
+import Chart from "./components/chart";
+
+type weatherPropType = {
+  data: number[];
+  avg: string;
+  color: string;
+};
 
 const Home: React.FC = () => {
   const [query, setQuery] = useState("");
   const dispatch = useDispatch();
-  const weather = useSelector((state) => state.weather.weather);
+  const weather = useSelector((state) => state.weather.currentWeatherQuery);
+  console.log("weather Redux state:", weather);
+
+  const temperatureProps: weatherPropType = {
+    data: weather.allTemps,
+    avg: weather.avgTemp,
+    color: "yellow",
+  };
+
+  const pressureProps: weatherPropType = {
+    data: weather.allPressures,
+    avg: weather.avgPressure,
+    color: "red",
+  };
+
+  const humidityProps: weatherPropType = {
+    data: weather.allHumidities,
+    avg: weather.avgHumidity,
+    color: "green",
+  };
 
   const handleSubmitQuery = (e) => {
     e.preventDefault();
@@ -23,10 +44,10 @@ const Home: React.FC = () => {
   };
 
   console.log("weather:", weather);
-
+  const data = [1, 5, 4, 7, 2];
   return (
     <>
-      <h1 className="italic">Weather Project</h1>
+      <h1 className="text-xl">Weather Project</h1>
 
       <form onSubmit={handleSubmitQuery}>
         <input
@@ -41,10 +62,9 @@ const Home: React.FC = () => {
           Search
         </button>
 
-        <Sparklines data={[5, 10, 5, 20, 8, 15]}>
-          <SparklinesLine />
-          <SparklinesReferenceLine type="mean" />
-        </Sparklines>
+        <Chart {...temperatureProps} />
+        <Chart {...pressureProps} />
+        <Chart {...humidityProps} />
       </form>
     </>
   );
