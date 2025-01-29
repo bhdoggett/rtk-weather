@@ -28,12 +28,12 @@ const Home: React.FC = () => {
       {
         data: city.allTemps,
         avg: city.avgTemp,
-        color: "yellow",
+        color: "orange",
       },
       {
         data: city.allPressures,
         avg: city.avgPressure,
-        color: "red",
+        color: "purple",
       },
       {
         data: city.allHumidities,
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
           placeholder="City, State, Country"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="border rounded-l-md border-slate-500 py-1 px-2 w-2/3"
+          className="focus:outline-none border rounded-l-md border-slate-500 py-1 px-2 w-2/3"
           required
         />
         <button
@@ -77,7 +77,7 @@ const Home: React.FC = () => {
       </form>
 
       {cities[0] && (
-        <div className="grid grid-cols-4 gap-4 text-center mb-1">
+        <div className="grid grid-cols-4 gap-2 text-center mb-1">
           <div className="font-bold text-lg">City</div>
           <div className="font-bold text-lg">Temperature</div>
           <div className="font-bold text-lg">Pressure</div>
@@ -87,7 +87,10 @@ const Home: React.FC = () => {
       <hr />
       {cities[0] &&
         cities.map((city: cityProcessedData) => (
-          <div className="grid grid-cols-4 gap-4 text-center" key={city.cityId}>
+          <div
+            className="grid grid-cols-4 gap-2 text-center hover:bg-slate-100"
+            key={city.cityId}
+          >
             <div className="font-medium text-sm my-auto">{city.city}</div>
             {weatherCharts(city).map((props) => (
               <Chart {...props} key={props.avg} />

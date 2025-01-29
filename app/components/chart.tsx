@@ -18,13 +18,13 @@ const Chart: React.FC<ChartProps> = (props) => {
         <SparklinesLine
           color={props.color}
           limit={15}
-          width={100}
+          width={80}
           height={20}
-          margin={5}
+          margin={3}
         />
         <SparklinesReferenceLine type="mean" />
       </Sparklines>
-      <p className="text-center">{props.avg}</p>
+      <p className="text-center font-medium">{props.avg}</p>
     </div>
   );
 };
