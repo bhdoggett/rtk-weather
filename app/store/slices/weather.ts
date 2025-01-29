@@ -1,16 +1,13 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
+import type { cityWeather } from "../../types/cityWeather";
+import type { weatherState } from "../../types/weatherState";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 const units = "imperial";
 
-type indexData = { main: { humidity: number; pressure: number; temp: number } };
-type dataAll = {
-  city: { name: string };
-  list: indexData[];
-};
-
-const getAvgData = (data: dataAll, dataType: string): string => {
+const getAvgData = (data: cityWeather, dataType: string): string => {
   let units = "";
   switch (dataType) {
     case "temp":
@@ -40,7 +37,7 @@ const getAvgData = (data: dataAll, dataType: string): string => {
   return `${parseInt(acc.toFixed(1))} ${units}`;
 };
 
-const allDataByType = (data: dataAll, dataType: string): number[] => {
+const allDataByType = (data: cityWeather, dataType: string): number[] => {
   return data.list.map((index) => index.main[dataType]);
 };
 
@@ -58,6 +55,7 @@ export const fetchWeather = createAsyncThunk(
 
     return {
       city: responseTwo.data.city.name,
+      cityId: uuidv4(),
       allTemps: allDataByType(responseTwo.data, "temp"),
       avgTemp: getAvgData(responseTwo.data, "temp"),
       allPressures: allDataByType(responseTwo.data, "pressure"),
@@ -71,7 +69,6 @@ export const fetchWeather = createAsyncThunk(
 export const weatherSlice = createSlice({
   name: "weather",
   initialState: {
-    currentWeatherQuery: {},
     status: "idle",
     coordinates: {},
     error: null,
@@ -86,8 +83,7 @@ export const weatherSlice = createSlice({
       })
       .addCase(fetchWeather.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.currentWeatherQuery = action.payload;
-        state.cities.push(action.payload);
+        state.cities = [...state.cities, action.payload];
       })
       .addCase(fetchWeather.rejected, (state, action) => {
         state.status = "failed";
