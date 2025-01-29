@@ -16,10 +16,6 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
   const weather = useSelector((state) => state.weather.currentWeatherQuery);
 
-  useEffect(() => {
-    console.log(weather);
-  });
-
   console.log("weather Redux state:", weather);
 
   const cityCharts: weatherPropsType[] = [
@@ -40,24 +36,6 @@ const Home: React.FC = () => {
     },
   ];
 
-  // const temperatureProps: weatherPropType = {
-  //   data: weather.allTemps,
-  //   avg: weather.avgTemp,
-  //   color: "yellow",
-  // };
-
-  // const pressureProps: weatherPropType = {
-  //   data: weather.allPressures,
-  //   avg: weather.avgPressure,
-  //   color: "red",
-  // };
-
-  // const humidityProps: weatherPropType = {
-  //   data: weather.allHumidities,
-  //   avg: weather.avgHumidity,
-  //   color: "green",
-  // };
-
   const handleSubmitQuery = (e) => {
     e.preventDefault();
     console.log("Dispatching fetchWeather with query:", query);
@@ -69,13 +47,12 @@ const Home: React.FC = () => {
   console.log("weather:", weather);
   const data = [1, 5, 4, 7, 2];
   return (
-    <>
-      <h1 className="text-xl">Weather Project</h1>
+    <div className="content-center">
+      <h1 className="text-xl text-center">Weather Project</h1>
 
-      <form onSubmit={handleSubmitQuery}>
+      <form onSubmit={handleSubmitQuery} className="text-center">
         <input
           type="text"
-          className="form-control"
           id="query"
           placeholder="City, State, Country"
           value={query}
@@ -85,13 +62,23 @@ const Home: React.FC = () => {
           Search
         </button>
       </form>
-      {weather &&
-        cityCharts.map((props) => (
-          <>
-            <Chart {...props} key={Math.floor(Math.random() * 1000)} />
-          </>
-        ))}
-    </>
+      {weather && (
+        <div className="grid grid-cols-4 gap-4 text-center">
+          <div className="font-bold text-lg">City</div>
+          <div className="font-bold text-lg">Temperature</div>
+          <div className="font-bold text-lg">Pressure</div>
+          <div className="font-bold text-lg">Humidity</div>
+        </div>
+      )}
+      {weather && (
+        <div className="grid grid-cols-4 gap-4 text-center">
+          <div className="font-bold text-md align-">{weather.city}</div>
+          {cityCharts.map((props) => (
+            <Chart {...props} key={props.avg} />
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 

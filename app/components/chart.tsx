@@ -13,7 +13,7 @@ type ChartProps = {
 
 const Chart: React.FC<ChartProps> = (props) => {
   return (
-    <div className="max-w-md">
+    <div className="max-w-md m-5">
       <Sparklines data={props.data}>
         <SparklinesLine
           color={props.color}
