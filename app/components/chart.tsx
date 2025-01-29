@@ -24,7 +24,7 @@ const Chart: React.FC<ChartProps> = (props) => {
         />
         <SparklinesReferenceLine type="mean" />
       </Sparklines>
-      <p className="text-center">Avg</p>
+      <p className="text-center">{props.avg}</p>
     </div>
   );
 };

@@ -2,10 +2,10 @@
 
 import { fetchWeather } from "./store/slices/weather";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Chart from "./components/chart";
 
-type weatherPropType = {
+type weatherPropsType = {
   data: number[];
   avg: string;
   color: string;
@@ -15,25 +15,48 @@ const Home: React.FC = () => {
   const [query, setQuery] = useState("");
   const dispatch = useDispatch();
   const weather = useSelector((state) => state.weather.currentWeatherQuery);
+
+  useEffect(() => {
+    console.log(weather);
+  });
+
   console.log("weather Redux state:", weather);
 
-  const temperatureProps: weatherPropType = {
-    data: weather.allTemps,
-    avg: weather.avgTemp,
-    color: "yellow",
-  };
+  const cityCharts: weatherPropsType[] = [
+    {
+      data: weather.allTemps,
+      avg: weather.avgTemp,
+      color: "yellow",
+    },
+    {
+      data: weather.allPressures,
+      avg: weather.avgPressure,
+      color: "red",
+    },
+    {
+      data: weather.allHumidities,
+      avg: weather.avgHumidity,
+      color: "green",
+    },
+  ];
 
-  const pressureProps: weatherPropType = {
-    data: weather.allPressures,
-    avg: weather.avgPressure,
-    color: "red",
-  };
+  // const temperatureProps: weatherPropType = {
+  //   data: weather.allTemps,
+  //   avg: weather.avgTemp,
+  //   color: "yellow",
+  // };
 
-  const humidityProps: weatherPropType = {
-    data: weather.allHumidities,
-    avg: weather.avgHumidity,
-    color: "green",
-  };
+  // const pressureProps: weatherPropType = {
+  //   data: weather.allPressures,
+  //   avg: weather.avgPressure,
+  //   color: "red",
+  // };
+
+  // const humidityProps: weatherPropType = {
+  //   data: weather.allHumidities,
+  //   avg: weather.avgHumidity,
+  //   color: "green",
+  // };
 
   const handleSubmitQuery = (e) => {
     e.preventDefault();
@@ -61,11 +84,13 @@ const Home: React.FC = () => {
         <button className="btn btn-primary search" type="submit">
           Search
         </button>
-
-        <Chart {...temperatureProps} />
-        <Chart {...pressureProps} />
-        <Chart {...humidityProps} />
       </form>
+      {weather &&
+        cityCharts.map((props) => (
+          <>
+            <Chart {...props} key={Math.floor(Math.random() * 1000)} />
+          </>
+        ))}
     </>
   );
 };

@@ -2,6 +2,7 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+const units = "imperial";
 
 type indexData = { main: { humidity: number; pressure: number; temp: number } };
 type dataAll = {
@@ -28,7 +29,7 @@ const getAvgData = (data: dataAll, dataType: string): string => {
   let acc = 0;
   let index = 0;
 
-  for (let i = 0; i <= data.list.length; i++) {
+  for (let i = 0; i < data.list.length; i++) {
     const current = data.list[i].main[dataType];
     acc += (current - acc) / (index + 1);
     index++;
@@ -40,25 +41,17 @@ const getAvgData = (data: dataAll, dataType: string): string => {
 };
 
 const allDataByType = (data: dataAll, dataType: string): number[] => {
-  const dataArray = [];
-
-  data.list.forEach((data) => dataArray.push(data));
-
-  // for (let i = 0; i <= data.list.length; i++) {
-  //   dataArray.push(data.list[i].main[dataType]);
-  // }
-
-  return dataArray;
+  return data.list.map((index) => index.main[dataType]);
 };
 
 export const fetchWeather = createAsyncThunk(
   "weather/fetchWeather",
   async (query) => {
-    const firstUrl = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${apiKey}`;
+    const firstUrl = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${apiKey}&units=${units}`;
     console.log("firstUrl:", firstUrl);
     const responseOne = await axios.get(firstUrl);
     console.log("axios firstResponse:", responseOne);
-    const secondUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${responseOne.data.coord.lat}&lon=${responseOne.data.coord.lon}&appid=${apiKey}`;
+    const secondUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${responseOne.data.coord.lat}&lon=${responseOne.data.coord.lon}&appid=${apiKey}&units=${units}`;
     console.log("secondUrl:", secondUrl);
     const responseTwo = await axios.get(secondUrl);
     console.log("axios secondResponse:", responseTwo);
