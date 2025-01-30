@@ -31,7 +31,7 @@ const getAvgData = (data: CityWeather, dataType: string): string => {
     index++;
   }
 
-  return `${parseInt(acc.toFixed(1))} ${units}`;
+  return `Average: ${parseInt(acc.toFixed(1))} ${units}`;
 };
 
 const allDataByType = (data: CityWeather, dataType: string): number[] => {
