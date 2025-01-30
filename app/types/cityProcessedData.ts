@@ -1,4 +1,4 @@
-export interface CityProcessedData {
+export type CityProcessedData = {
   city: string;
   cityId: string;
   allTemps: number[];
@@ -7,4 +7,4 @@ export interface CityProcessedData {
   avgPressure: string;
   allHumidities: number[];
   avgHumidity: string;
-}
+};
