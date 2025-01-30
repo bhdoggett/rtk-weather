@@ -2,42 +2,14 @@
 
 import { fetchWeather } from "./store/slices/weather";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-import Chart from "./components/chart";
-import type { WeatherState } from "./types/WeatherState";
-import { IndexData } from "./types/IndexData";
+import { useState } from "react";
+import ChartGroup from "./components/chartGroup";
 import type { CityProcessedData } from "./types/CityProcessedData";
 
-type weatherPropsType = {
-  data: number[];
-  avg: string;
-  color: string;
-};
-
 const Home: React.FC = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.weather.cities);
-
-  const weatherCharts = (city: cityProcessedData): weatherPropsType[] => {
-    return [
-      {
-        data: city.allTemps,
-        avg: city.avgTemp,
-        color: "orange",
-      },
-      {
-        data: city.allPressures,
-        avg: city.avgPressure,
-        color: "purple",
-      },
-      {
-        data: city.allHumidities,
-        avg: city.avgHumidity,
-        color: "green",
-      },
-    ];
-  };
 
   const handleSubmitQuery = (e) => {
     e.preventDefault();
@@ -46,6 +18,7 @@ const Home: React.FC = () => {
     return cities;
   };
 
+  console.log(cities);
   return (
     <div className="content-center">
       <h1 className="text-xl font-extrabold text-center m-4">
@@ -79,16 +52,8 @@ const Home: React.FC = () => {
       )}
       <hr />
       {cities[0] &&
-        cities.map((city: cityProcessedData) => (
-          <div
-            className="grid grid-cols-4 gap-2 text-center hover:bg-slate-100"
-            key={city.cityId}
-          >
-            <div className="font-medium text-sm my-auto">{city.city}</div>
-            {weatherCharts(city).map((props) => (
-              <Chart {...props} key={props.avg} />
-            ))}
-          </div>
+        cities.map((city: CityProcessedData) => (
+          <ChartGroup city={city} key={city.cityId} />
         ))}
     </div>
   );
