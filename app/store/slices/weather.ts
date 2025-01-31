@@ -5,8 +5,9 @@ import type { CityWeather } from "../../types/CityWeather";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 const units = "imperial";
+type DataType = "temp" | "pressure" | "humidity";
 
-const getAvgData = (data: CityWeather, dataType: string): string => {
+const getAvgData = (data: CityWeather, dataType: DataType): string => {
   let units = "";
   switch (dataType) {
     case "temp":
