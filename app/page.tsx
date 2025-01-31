@@ -18,7 +18,8 @@ const Home: React.FC = () => {
     return cities;
   };
 
-  console.log(cities);
+  const citiesExist = cities.length > 0;
+
   return (
     <div className="content-center">
       <h1 className="text-xl font-extrabold text-center m-4">
@@ -42,16 +43,19 @@ const Home: React.FC = () => {
         </button>
       </form>
 
-      {cities[0] && (
-        <div className="grid grid-cols-4 gap-2 text-center mb-1">
-          <div className="font-bold text-lg">City</div>
-          <div className="font-bold text-lg">Temperature</div>
-          <div className="font-bold text-lg">Pressure</div>
-          <div className="font-bold text-lg">Humidity</div>
-        </div>
+      {citiesExist && (
+        <>
+          <div className="grid grid-cols-4 gap-2 text-center mb-1">
+            <div className="font-bold text-lg">City</div>
+            <div className="font-bold text-lg">Temperature</div>
+            <div className="font-bold text-lg">Pressure</div>
+            <div className="font-bold text-lg">Humidity</div>
+          </div>
+          <hr />
+        </>
       )}
-      <hr />
-      {cities[0] &&
+
+      {citiesExist &&
         cities.map((city: CityProcessedData) => (
           <ChartGroup city={city} key={city.cityId} />
         ))}
